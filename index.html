@@ -1,0 +1,32 @@
+import openai
+import streamlit as st
+
+st.title("Personal Statement Generator")
+
+intro = st.text_input("Introduction: Start with a hook to grab the reader's attention and give a brief overview of your background, interests, and career goals.", value="")
+background = st.text_input("Background and life experiences: Discuss your upbringing, family, and any significant life experiences that have shaped who you are today.", value="")
+academic = st.text_input("Academic goals and interests: Explain why you want to pursue a college degree and what specific fields of study interest you.", value="")
+unique = st.text_input("Unique qualities and achievements: Highlight your unique qualities, strengths, and achievements, and how they make you a suitable candidate for the college.", value="")
+personal = st.text_input("Personal growth and future aspirations: Explain how you hope to grow personally and professionally through your college education and what you aspirate to do in the future.", value="")
+relevance = st.text_input("Relevance to the college: Show why the college is a good fit for you and why you are a good fit for the college, including research on its programs and values.", value="")
+
+if st.button("Generate Personal Statement"):
+    prompt = (f"Introduction: {intro}\n\n" + 
+              f"Background and life experiences: {background}\n\n" + 
+              f"Academic goals and interests: {academic}\n\n" + 
+              f"Unique qualities and achievements: {unique}\n\n" + 
+              f"Personal growth and future aspirations: {personal}\n\n" + 
+              f"Relevance to the college: {relevance}\n")
+    
+    response = openai.Completion.create(
+      engine="text-davinci-002",
+      prompt=prompt,
+      max_tokens=1024,
+      n=1,
+      stop=None,
+      temperature=0.5,
+    )
+    
+    statement = response["choices"][0]["text"].strip()
+    st.write("Generated Personal Statement:")
+    st.write(statement)
